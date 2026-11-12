@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "status": "draft",
+  "note": "Review template only. No firmware agreement or calibrated hardware supplied. Intentionally rejected until actual streams and UUIDs are filled.",
+  "hardware_confirmed_by": null,
+  "receiver_confirmed_by": null,
+  "agreement_record": null,
+  "service_uuid": null,
+  "notify_uuid": null,
+  "configuration": {"wire_version": 1, "streams": []},
+  "required_stream_fields": ["id", "name", "sample_rate_hz", "start_time_s", "dtype_code", "channels", "units", "scale", "offset", "max_gap_s", "clock", "signal_chain"],
+  "required_clock_fields": ["tick_hz", "first_tick", "first_sample", "mapping_evidence"],
+  "required_signal_chain_evidence": ["channel and electrode map", "ADC range and resolution", "AFE gain", "analog bandwidth and antialias filter", "digital filters and decimation", "calibration record and date", "audio PCM normalization", "IMU axis order and conversion", "lead-off and clipping flag source"],
+  "pending_agreement": ["Aarav: actual channel map, ADC and clock configuration, firmware framing and notification UUIDs", "Sathvik: receiver interoperability, BLE throughput and disconnect behavior", "Both: start/stop acknowledgement and final sample counters; currently unavailable", "Bench validation: shared reference clock alignment within 50 ms"]
+}

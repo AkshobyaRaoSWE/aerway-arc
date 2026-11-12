@@ -12152,12 +12152,12 @@
     }
   ],
   "environment": {
-    "python": "3.14.5",
+    "python": "3.12.13",
     "numpy": "2.4.6",
     "scipy": "1.18.0",
     "scikit-learn": "1.9.0"
   },
   "training_participants": 6,
   "validation_participants": 2,
-  "bundle_digest": "cb979f977155c869346c3a9b3f71707e432edf8c51e0553d1644f005536a65b5"
+  "bundle_digest": "d8a70ddb452237307275e071bcb0bb0fd945c70bcea20269383f1f70e8529190"
 }

@@ -11,13 +11,31 @@ Architecture and readiness gates: [PDF](docs/architecture.pdf) · [HTML source](
 
 ## Run
 
-Python 3.11+ with NumPy, SciPy and scikit-learn. From this directory:
+Pinned Python 3.12.13 and dependencies, including BLE, plotting and dataset inspection. Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then from this directory:
 
 ```sh
-python3 -m pip install -e '.[test,plot]'
-python3 -m pytest -q
-python3 -m arc selfcheck --output runs/synthetic-check
+uv sync --frozen --all-extras
+uv run --frozen --all-extras pytest -q
+uv run --frozen --all-extras arc selfcheck --output runs/synthetic-check
 ```
+
+`uv.lock` pins transitive dependencies and hashes; `.python-version` selects the tested interpreter. `uv sync` installs it when needed. Do not regenerate the lock to install. Other operating systems have not yet been exercised.
+
+## Hardware bench workflow
+
+The [packet contract](docs/packet-contract.md) remains a draft until Aarav and Sathvik confirm actual firmware fields, UUIDs, channel wiring, scaling and rates. The receiver refuses an unconfirmed contract. No coordination or hardware agreement is claimed.
+
+```sh
+uv run --frozen --all-extras arc capture-ble local-data/bench-001 --contract local-data/confirmed-contract.json --metadata local-data/bench-metadata.json --address DEVICE --duration-s 300
+uv run --frozen --all-extras arc view local-data/bench-001
+uv run --frozen --all-extras arc replay-session local-data/bench-001 --output runs/bench-replay
+```
+
+Start the view in a second terminal after the first checkpoint exists to watch acquisition. Saved sessions support scrubbing, replay, explicit gaps and channel units. Add `--model MODEL.json` for offline scoring with an input-compatible model. Existing synthetic weights cannot score real recordings. No validated real model is available yet.
+
+Bench signals first. USB tether only with body electrodes disconnected. Live coaching stays off. Real awake training requires approved pressure-reference rules, calibrated hardware and verified timing.
+
+PSG-Audio access, actual one-recording inspection and unresolved alignment: [dataset evidence](docs/psg-audio.md). No participant-held-out real-data result exists yet. Model architecture remains unchanged.
 
 Selfcheck creates explicit synthetic recordings, freezes person-level splits, trains both baselines, selects thresholds using validation participants, exports JSON models, reloads them, evaluates held-out participants, and verifies abstention. Outputs refuse overwriting an existing run.
 
@@ -25,7 +43,7 @@ Selfcheck creates explicit synthetic recordings, freezes person-level splits, tr
 
 `arc.session.SessionWriter(path, metadata, stream_configs)` records incrementally. Each `append(stream, samples, valid)` synchronizes both chunk files, their directory entries, and an atomically replaced manifest checkpoint before acknowledging. `finalize(labels)` marks the session complete. `write_session(...)` uses the same core to pack existing arrays. `Session(path)` verifies hashes, schema, shapes and paths. `Session.read(name, start_s, end_s)` reads bounded windows; absent samples remain invalid. Invalid samples are never interpreted as a failed hold or an apnea.
 
-An interrupted writer preserves every acknowledged chunk. `Session(path)` loads the last committed checkpoint; orphan/torn files are ignored. `recover_session(source, destination)` copies only verified committed data, leaves the source untouched, and marks output `recovered`/incomplete. Training and held-out evaluation refuse incomplete sessions. No automatic writer resume or hardware power-loss qualification is claimed. This is a **transport-independent incremental recorder**, not a BLE receiver. It accepts already aligned stream clocks. A transport adapter must preserve original sample counters, boot IDs, sequence gaps, raw ADC counts, channel wiring, scaling, filter settings and clock anchors in its source files/configuration. Do not align sensors or reference labels by packet arrival time. Hardware protocol, BLE UUIDs and effective ADC configuration remain unprovided.
+An interrupted writer preserves every acknowledged chunk. `Session(path)` loads the last committed checkpoint; orphan/torn files are ignored. `recover_session(source, destination)` copies only verified committed data, leaves the source untouched, and marks output `recovered`/incomplete. Training and held-out evaluation refuse incomplete sessions. No automatic writer resume or hardware power-loss qualification is claimed. This core is a **transport-independent incremental recorder**; the bench BLE adapter wraps it. It accepts already aligned stream clocks. A transport adapter must preserve original sample counters, boot IDs, sequence gaps, raw ADC counts, channel wiring, scaling, filter settings and clock anchors in its source files/configuration. Do not align sensors or reference labels by packet arrival time. Hardware protocol, BLE UUIDs and effective ADC configuration remain unprovided.
 
 Metadata fields:
 

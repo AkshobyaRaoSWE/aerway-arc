@@ -1,14 +1,14 @@
-# Aerway Arc
-
-Two research pipelines: daytime EMG hold classification and nighttime audio respiratory-event candidates. **169 tests pass. All supplied recordings and trained models are synthetic software checks.**
-
-[Source code](repo/) · [Architecture](repo/docs/architecture.pdf) · [Saved session](evidence/sample-session/) · [Awake baseline](evidence/baselines/awake/) · [Night baseline](evidence/baselines/night_audio/) · [Crash recovery proof](evidence/crash/recovery-proof.json)
-
-![Saved session with channels, units and missing-data flags](evidence/sample-session.png)
-
-## Implementation review bundle
+# Arc implementation review bundle
 
 All recordings and model outputs here are SYNTHETIC SOFTWARE EVIDENCE. No human data, clinical accuracy or completed hardware validation is claimed.
+
+## Hardware-arrival update
+
+- [Install and run recording view](repo/README.md#hardware-bench-workflow).
+- [BLE packet contract and acceptance checks](repo/docs/packet-contract.md). Firmware agreement and hardware tests remain pending.
+- [PSG-Audio access and ingestion findings](repo/docs/psg-audio.md). Real audio/events inspected locally; alignment remains unvalidated, so no real-data baseline performance is claimed.
+
+No larger model or live coaching added. Real awake training stays gated on approved reference protocol and calibrated hardware. Human recordings are excluded from this repository.
 
 ## Inspect
 
@@ -29,9 +29,9 @@ Recorder/crash evidence was tested on the POSIX platform listed in environment.j
 From this directory, with the tested Python version and listed dependencies:
 
 ```sh
-python3 -m pip install -r requirements-tested.txt
-python3 -m pip install --no-deps -e repo
-python3 repo/scripts/verify_handoff.py .
+uv sync --directory repo --frozen --all-extras
+repo/.venv/bin/python repo/scripts/verify_handoff.py .
+# Activate repo/.venv before running the remaining python commands.
 python3 -m arc validate-session evidence/sample-session
 python3 -m arc check-reference evidence/sample-session
 python3 -m arc replay-session evidence/sample-session --output replay-again

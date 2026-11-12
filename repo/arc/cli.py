@@ -1,4 +1,4 @@
-"""Local research workflow. No network, device-control, or treatment API."""
+"""Local research workflow and bench-only BLE recording. No treatment API."""
 import argparse
 import json
 from pathlib import Path
@@ -26,6 +26,16 @@ def main(argv=None):
     plot = commands.add_parser("plot-session", help="plot recorded channels with explicit missing-data shading")
     plot.add_argument("session")
     plot.add_argument("--output", required=True)
+    view = commands.add_parser("view", help="local recording/replay view and optional offline scoring")
+    view.add_argument("session")
+    view.add_argument("--model")
+    view.add_argument("--port", type=int, default=8765)
+    capture = commands.add_parser("capture-ble", help="record confirmed bench BLE protocol; electrodes disconnected")
+    capture.add_argument("output")
+    capture.add_argument("--contract", required=True)
+    capture.add_argument("--metadata", required=True)
+    capture.add_argument("--address", required=True)
+    capture.add_argument("--duration-s", required=True, type=float)
     reference = commands.add_parser("check-reference", help="verify awake labels against the preserved pressure reference")
     reference.add_argument("session")
     pack = commands.add_parser("pack", help="pack pre-aligned numeric NPY arrays from a JSON specification")
@@ -75,6 +85,18 @@ def main(argv=None):
             from .replay import plot_session
             plot_session(Session(args.session), args.output)
             result = {"plot": str(Path(args.output).resolve())}
+        elif args.command == "view":
+            from .viewer import serve_session
+            serve_session(args.session, port=args.port, model_path=args.model)
+            return 0
+        elif args.command == "capture-ble":
+            import asyncio
+            from .ble_receiver import run_ble_capture
+            contract = json.loads(Path(args.contract).read_text())
+            metadata = json.loads(Path(args.metadata).read_text())
+            path = asyncio.run(run_ble_capture(args.output, metadata, contract, args.address,
+                                              duration_s=args.duration_s))
+            result = {"session": str(Path(path).resolve()), "scope": "bench_only"}
         elif args.command == "check-reference":
             from .reference import validate_awake_reference
             session = Session(args.session)
@@ -134,7 +156,7 @@ def main(argv=None):
             result = selfcheck(args.output)
         print(json.dumps(result, indent=2, allow_nan=False))
         return 0
-    except (ValueError, OSError, KeyError, TypeError) as exc:
+    except (ValueError, OSError, KeyError, TypeError, RuntimeError) as exc:
         print(f"arc: {exc}", file=sys.stderr)
         return 2
 

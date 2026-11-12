@@ -449,7 +449,7 @@
   },
   "partition": "test",
   "synthetic_only": true,
-  "model_digest": "7f9de2c690e09730915060f293c6c5ffa98419d8b572c269b06792312f28c015",
+  "model_digest": "86b0fcd5e2a1c9247348b566f3e06eac1c646fe0ee3c03c94bdb87ed48527f77",
   "dataset_digest": "e2b079b594707f2b0d179dd9001aebce344ffe85d31d78133a5e871711e55583",
   "clinical_validation": "none"
 }

@@ -270,12 +270,12 @@
     }
   ],
   "environment": {
-    "python": "3.14.5",
+    "python": "3.12.13",
     "numpy": "2.4.6",
     "scipy": "1.18.0",
     "scikit-learn": "1.9.0"
   },
   "training_participants": 6,
   "validation_participants": 2,
-  "bundle_digest": "7f9de2c690e09730915060f293c6c5ffa98419d8b572c269b06792312f28c015"
+  "bundle_digest": "86b0fcd5e2a1c9247348b566f3e06eac1c646fe0ee3c03c94bdb87ed48527f77"
 }

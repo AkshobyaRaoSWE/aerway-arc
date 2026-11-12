@@ -89,13 +89,21 @@ def build(destination):
                "source_commit": git.stdout.strip() if git.returncode == 0 else None, "tests_passed": test_count})
     repo = destination / "repo"
     repo.mkdir()
-    for name in ("arc", "tests", "scripts", "docs"):
+    for name in ("arc", "tests", "scripts", "docs", "examples"):
         shutil.copytree(SOURCE / name, repo / name, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache"))
-    for name in ("README.md", "pyproject.toml", ".gitignore"):
+    for name in ("README.md", "pyproject.toml", ".gitignore", "uv.lock", ".python-version"):
         shutil.copy2(SOURCE / name, repo / name)
     (destination / "README.md").write_text('''# Arc implementation review bundle
 
 All recordings and model outputs here are SYNTHETIC SOFTWARE EVIDENCE. No human data, clinical accuracy or completed hardware validation is claimed.
+
+## Hardware-arrival update
+
+- [Install and run recording view](repo/README.md#hardware-bench-workflow).
+- [BLE packet contract and acceptance checks](repo/docs/packet-contract.md). Firmware agreement and hardware tests remain pending.
+- [PSG-Audio access and ingestion findings](repo/docs/psg-audio.md). Real audio/events inspected locally; alignment remains unvalidated, so no real-data baseline performance is claimed.
+
+No larger model or live coaching added. Real awake training stays gated on approved reference protocol and calibrated hardware. Human recordings are excluded from this repository.
 
 ## Inspect
 
@@ -116,9 +124,9 @@ Recorder/crash evidence was tested on the POSIX platform listed in environment.j
 From this directory, with the tested Python version and listed dependencies:
 
 ```sh
-python3 -m pip install -r requirements-tested.txt
-python3 -m pip install --no-deps -e repo
-python3 repo/scripts/verify_handoff.py .
+uv sync --directory repo --frozen --all-extras
+repo/.venv/bin/python repo/scripts/verify_handoff.py .
+# Activate repo/.venv before running the remaining python commands.
 python3 -m arc validate-session evidence/sample-session
 python3 -m arc check-reference evidence/sample-session
 python3 -m arc replay-session evidence/sample-session --output replay-again
