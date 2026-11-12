@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "session_id": "synthetic-crash-session",
+  "source_manifest_sha256": "61031354f11abf21fb36c8c9fefe30bbdb5b5d431a4cb6162026a872fe777a80",
+  "synthetic_only": true,
+  "recording_status": "recovered",
+  "duration_s": 2.0,
+  "replay_mode": "offline original sample order, not wall-clock playback",
+  "invalid_values": "preserved in CSV; apply valid=0 mask before analysis",
+  "timestamp_definition": "start_time_s + sample_index / sample_rate_hz",
+  "streams": {
+    "emg": {
+      "file": "emg.csv",
+      "sha256": "65f680ec6f5d5d8349869935c101f8b9ec4ce2f3c8c1d8ac97228ab7a7dc0124",
+      "sample_count": 200,
+      "valid_sample_count": 195,
+      "invalid_sample_count": 5,
+      "sample_rate_hz": 100,
+      "start_time_s": 0.0,
+      "end_time_s": 2.0,
+      "channels": [
+        "synthetic_counter"
+      ],
+      "units": [
+        "uV"
+      ],
+      "value_columns": [
+        "value:synthetic_counter"
+      ],
+      "missing_ranges": [
+        {
+          "first_sample": 130,
+          "end_sample": 135,
+          "start_s": 1.3,
+          "end_s": 1.35,
+          "kind": "invalid_samples"
+        }
+      ]
+    }
+  }
+}

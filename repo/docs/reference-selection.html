@@ -1,0 +1,62 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Arc | Awake reference selection</title><style>
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #141414; color: #eeeeec; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.page { width: 210mm; height: 297mm; padding: 19mm 19mm 17mm; position: relative; break-after: page; overflow: hidden; }
+.page:last-child { break-after: auto; }
+.top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444; padding-bottom: 4mm; margin-bottom: 12mm; color: #b8b8b3; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; }
+h1 { font-size: 47px; line-height: 1.04; letter-spacing: -1.9px; font-weight: 550; margin: 0 0 8mm; }
+h2 { font-size: 29px; line-height: 1.14; letter-spacing: -.8px; font-weight: 550; margin: 0 0 7mm; }
+h3 { font-size: 15px; line-height: 1.35; margin: 7mm 0 2.5mm; font-weight: 600; }
+p { font-size: 11.3px; line-height: 1.6; margin: 0 0 4mm; color: #d3d3ce; }
+.lead { font-size: 15px; line-height: 1.5; color: #deded9; max-width: 153mm; }
+.caption { color: #a1a19b; font-size: 9px; line-height: 1.5; }
+.eyebrow { font-size: 10px; color: #b7b7b0; text-transform: uppercase; letter-spacing: 1.7px; margin: 0 0 5mm; }
+.rule { border-top: 1px solid #444; padding-top: 4mm; margin-top: 5mm; }
+.callout { border-left: 2px solid #bdbdb4; padding: 3mm 0 3mm 5mm; margin: 6mm 0; }
+.callout p:last-child { margin-bottom: 0; }
+code, .mono { font-family: "SFMono-Regular", Menlo, Consolas, monospace; font-size: 10px; }
+code { color: #efefe9; }
+a { color: #cacac2; text-decoration: underline; text-decoration-thickness: .5px; text-underline-offset: 2px; }
+table { width: 100%; border-collapse: collapse; margin: 4mm 0 6mm; table-layout: fixed; }
+th { font-size: 9px; text-transform: uppercase; letter-spacing: .8px; font-weight: 500; text-align: left; color: #a4a49e; padding: 3mm 3mm 3mm 0; border-bottom: 1px solid #63635b; }
+td { font-size: 10.6px; line-height: 1.5; vertical-align: top; padding: 3.3mm 3mm 3.3mm 0; border-bottom: 1px solid #373733; color: #d8d8d1; }
+td:first-child { color: #f0f0e8; }
+.small-table td { font-size: 10px; padding-top: 2.7mm; padding-bottom: 2.7mm; }
+.flow { border-top: 1px solid #555; border-bottom: 1px solid #555; margin: 7mm 0; padding: 4mm 0; }
+.flow-row { display: grid; grid-template-columns: 34mm 1fr; gap: 7mm; padding: 3mm 0; }
+.flow-row + .flow-row { border-top: 1px solid #32322e; }
+.flow-label { font-size: 10px; color: #9f9f97; padding-top: 1px; }
+.flow-value { font-size: 12px; line-height: 1.5; }
+.columns { display: grid; grid-template-columns: 1fr 1fr; gap: 9mm; }
+.columns h3 { margin-top: 3mm; }
+ul, ol { margin: 2mm 0 5mm; padding-left: 4.5mm; }
+li { font-size: 11px; line-height: 1.55; color: #d3d3ce; margin: 0 0 2mm; padding-left: 1mm; }
+.footer { position: absolute; bottom: 12mm; left: 19mm; right: 19mm; border-top: 1px solid #444; padding-top: 3mm; display: flex; justify-content: space-between; align-items: flex-start; gap: 5mm; font-size: 8px; line-height: 1.5; color: #99998f; }
+.footer .sources { max-width: 145mm; }
+.big-number { font-size: 36px; letter-spacing: -1px; line-height: 1; margin: 0 0 3mm; color: #f3f3eb; }
+.note-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; margin: 7mm 0; }
+.label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: #a7a79d; margin-bottom: 2mm; }
+@media screen { .page { margin: 16px auto; box-shadow: 0 0 0 1px #333; } }
+</style></head><body><section class="page"><div class="top"><span>Arc / Awake reference decision</span><span>11 November 2026</span></div>
+<div class="eyebrow">Selected instrument / Bench acceptance pending</div><h1>JMS TPM-02.<br>Preserve the pressure trace.</h1>
+<p class="lead">Use the probe, connecting tube and manufacturer recording software as the proposed independent pressure reference. EMG is the model input; pressure is the label source.</p>
+<h3>Why this choice</h3><p>The official software manual's CSV example contains measurement time and tongue pressure, in kPa, with time entries spaced 0.05 seconds apart. This provides a documented trace-export path for sustained holds and interruptions. The catalog lists USB data communication. These are manufacturer-document claims, not results from an Arc bench test.</p>
+<div class="callout"><p><strong>Selected, not already validated.</strong> No instrument has been purchased, connected or calibrated in this build. The example cadence does not guarantee every firmware/export configuration. No shared hardware synchronization interface was verified.</p></div>
+<h3>Import contract</h3><table class="small-table"><tr><th>Preserve</th><th>Rule</th></tr>
+<tr><td>Original export</td><td>Retain immutable manufacturer CSV, instrument/firmware identity, calibration record and trial identity. Preserve original trial-relative timestamps.</td></tr>
+<tr><td>Time mapping</td><td>Map each trial to the Arc session clock using independently measured offset/drift. Verify common synchronization events. Reject unmeasured alignment; never concatenate resetting trial clocks blindly.</td></tr>
+<tr><td>Stored reference</td><td>reference_pressure, tongue_palate_pressure channel, kPa, explicit sample rate and per-sample validity. Preserve gaps; do not infer a hold through missing measurements.</td></tr>
+<tr><td>Physical task</td><td>Record clinician-approved probe position, tongue-palate task, pressure criterion and meaningful interruption duration. Pressure verifies only this defined contact/force task, not every aspect of technique.</td></tr></table>
+<p class="caption">Implementation accepts aligned numeric arrays through the existing pack API. A direct device driver or manufacturer-specific CSV parser has not been fabricated from an example screenshot.</p>
+<div class="footer"><div class="sources"><a href="https://orarize.com/english/zetsuatsu/download/instruction_for_use.pdf#page=19">JMS software manual, printed p17 / Figure39</a> · <a href="https://www.jms.cc/english/products/03_oral_enteral_%20nutrition/catalog/tpmd.pdf">JMS product specifications</a></div><span>01 / 02</span></div></section>
+<section class="page"><div class="top"><span>Arc / Label contract and proof</span><span>Criteria cannot be invented as approved</span></div>
+<h2>A label must reproduce<br>from an independent trace.</h2>
+<table><tr><th>Pressure run</th><th>Stored label</th></tr><tr><td>Valid, at/above threshold, lasting at least hold_min_s</td><td>Positive maintained hold. Offline label spans the qualifying run from its original onset.</td></tr><tr><td>Valid, below threshold, lasting at least interruption_min_s</td><td>Negative interruption. Same onset convention.</td></tr><tr><td>Shorter run or invalid pressure</td><td>Exclude, never silently positive or negative. Invalid samples break runs.</td></tr></table>
+<p>The threshold and both durations are mandatory protocol inputs. One protocol decision rule must apply across the cohort. Per-session calibration and instrument identity remain individually recorded. Non-task periods require explicit exclusions.</p>
+<h3>What software now enforces</h3><ul><li>Separate pressure stream, kPa units and declared alignment.</li><li>Instrument, placement, calibration, source, protocol and approval fields.</li><li>Protocol hash on generated labels; replayed pressure must reproduce scored labels.</li><li>Train/validation pressure checked during development. Test pressure checked at held-out evaluation, never for threshold selection.</li><li>Pressure channel excluded from runtime feature vectors.</li><li>Incomplete and recovered sessions rejected from baseline training/evaluation.</li></ul>
+<h3>What remains a real-world acceptance gate</h3><p>The actual instrument, placement and calibration must be checked; export rate, omissions and clock alignment must be measured. A qualified clinician must approve task-specific numerical criteria before they are represented as approved. Software cannot authenticate those facts from a populated JSON field.</p>
+<div class="callout"><p><strong>Bundled example is synthetic.</strong> A generated pressure trace drives labels using 5 kPa and 0.1-second test values. Those constants exercise software; they are not suggested clinical thresholds. No human measurement or diagnostic performance is claimed.</p></div>
+<p class="caption">Evidence bundle includes a loadable held-out session, channel/time/validity plot, exact CSV replay, baseline outputs and a SIGKILL recovery demonstration. Source scripts regenerate and verify those artifacts after extraction.</p>
+<div class="footer"><div class="sources">Implementation: <a href="../arc/reference.py">reference.py</a> · <a href="../scripts/build_handoff.py">build_handoff.py</a> · <a href="../scripts/verify_handoff.py">verify_handoff.py</a><br>Engineering selection and proposed protocol boundary, not treatment advice or clinical approval.</div><span>02 / 02</span></div></section></body></html>

@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "timebase": "aligned_session_seconds",
+  "recording_status": "recording",
+  "metadata": {
+    "participant_id": "synthetic-crash-person",
+    "session_id": "synthetic-crash-session",
+    "placement_id": "generated",
+    "source": "crash-probe",
+    "source_version": "1",
+    "permission": "generated software fixture",
+    "synthetic": true,
+    "label_source": "no reference labels",
+    "acquisition_config": {
+      "clock": "synthetic100Hz"
+    }
+  },
+  "declared_streams": {
+    "emg": {
+      "sample_rate_hz": 100,
+      "channels": [
+        "synthetic_counter"
+      ],
+      "units": [
+        "uV"
+      ],
+      "start_time_s": 0.0
+    }
+  },
+  "streams": {
+    "emg": {
+      "sample_rate_hz": 100,
+      "channels": [
+        "synthetic_counter"
+      ],
+      "units": [
+        "uV"
+      ],
+      "start_time_s": 0.0,
+      "n_samples": 200,
+      "chunks": [
+        {
+          "first_sample": 0,
+          "n_samples": 100,
+          "samples": "emg-000000000000.npy",
+          "valid": "emg-000000000000-valid.npy",
+          "samples_sha256": "202afd2614b016bd6c89ac50c5e61fd1e7da9276afc294ea9e46db51fceb3f9c",
+          "valid_sha256": "273b05611b070e0f3d4cb0d91e1890574a88241d4ad9aabbb19ac3ef9a20281d"
+        },
+        {
+          "first_sample": 100,
+          "n_samples": 100,
+          "samples": "emg-000000000100.npy",
+          "valid": "emg-000000000100-valid.npy",
+          "samples_sha256": "613654c8cc9d4c16bebb3b416a529be95f62868851e6481b22d4be6a5bcc190a",
+          "valid_sha256": "b43c4a54844e27560eaea70de7801f107775367a0d7e2e638b54ce16deec5003"
+        }
+      ]
+    }
+  },
+  "labels": []
+}

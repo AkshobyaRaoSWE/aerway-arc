@@ -1,0 +1,277 @@
+{
+  "schema_version": 1,
+  "timebase": "aligned_session_seconds",
+  "recording_status": "complete",
+  "metadata": {
+    "participant_id": "synthetic-person-02",
+    "session_id": "synthetic-session-02",
+    "placement_id": "synthetic-placement",
+    "source": "arc-selfcheck",
+    "source_version": "2",
+    "permission": "generated synthetic fixture, no participant data",
+    "synthetic": true,
+    "label_source": "synthetic pressure trace for awake; generated audio states for night; not clinical truth",
+    "awake_reference": {
+      "schema_version": 1,
+      "status": "synthetic",
+      "stream": "reference_pressure",
+      "protocol_id": "synthetic-pressure-software-check",
+      "protocol_version": "1",
+      "instrument_id": "generated-reference",
+      "instrument_model": "no physical instrument",
+      "placement": "simulated tongue-palate contact; no human measurement",
+      "calibration_id": "synthetic-kpa-scale",
+      "calibration_record": "generator constants, not hardware calibration",
+      "source_record": "reference_pressure stream in this synthetic session",
+      "approved_by": "not applicable: synthetic software fixture",
+      "approval_reference": "not clinical approval; test-only protocol",
+      "pressure_threshold_kpa": 5.0,
+      "hold_min_s": 0.1,
+      "interruption_min_s": 0.1
+    },
+    "acquisition_config": {
+      "signal_chain": {
+        "emg": {
+          "generator": "Gaussian amplitude states"
+        },
+        "audio": {
+          "generator": "sine amplitude states",
+          "clip_low": -1.0,
+          "clip_high": 1.0
+        }
+      },
+      "reference_alignment": {
+        "method": "shared synthetic sample clock",
+        "max_error_s": 0.0
+      }
+    }
+  },
+  "declared_streams": {
+    "emg": {
+      "sample_rate_hz": 1600,
+      "channels": [
+        "synthetic_a",
+        "synthetic_b"
+      ],
+      "units": [
+        "uV",
+        "uV"
+      ],
+      "calibration": {
+        "id": "synthetic-calibration",
+        "source": "generator constant available before recording",
+        "rms_reference": [
+          12.0,
+          12.0
+        ],
+        "available_at_s": 0.0
+      },
+      "start_time_s": 0.0
+    },
+    "audio": {
+      "sample_rate_hz": 16000,
+      "channels": [
+        "mono"
+      ],
+      "units": [
+        "FS"
+      ],
+      "start_time_s": 0.0
+    },
+    "reference_pressure": {
+      "sample_rate_hz": 100,
+      "channels": [
+        "tongue_palate_pressure"
+      ],
+      "units": [
+        "kPa"
+      ],
+      "start_time_s": 0.0
+    }
+  },
+  "streams": {
+    "emg": {
+      "sample_rate_hz": 1600,
+      "channels": [
+        "synthetic_a",
+        "synthetic_b"
+      ],
+      "units": [
+        "uV",
+        "uV"
+      ],
+      "calibration": {
+        "id": "synthetic-calibration",
+        "source": "generator constant available before recording",
+        "rms_reference": [
+          12.0,
+          12.0
+        ],
+        "available_at_s": 0.0
+      },
+      "start_time_s": 0.0,
+      "n_samples": 16000,
+      "chunks": [
+        {
+          "first_sample": 0,
+          "n_samples": 16000,
+          "samples": "emg-000000000000.npy",
+          "valid": "emg-000000000000-valid.npy",
+          "samples_sha256": "af94e9763cc77e7921f588566d979c16176117b51af5c87a16367207576551d0",
+          "valid_sha256": "c6ad9ab08768cb4237371cc67b22fda6b3d3fd2e14322dac7cbfa3e67ce6e20c"
+        }
+      ]
+    },
+    "audio": {
+      "sample_rate_hz": 16000,
+      "channels": [
+        "mono"
+      ],
+      "units": [
+        "FS"
+      ],
+      "start_time_s": 0.0,
+      "n_samples": 160000,
+      "chunks": [
+        {
+          "first_sample": 0,
+          "n_samples": 65536,
+          "samples": "audio-000000000000.npy",
+          "valid": "audio-000000000000-valid.npy",
+          "samples_sha256": "6d437bab68e165f3a571468e73e9be4074a6e2181d0688fffe8482d0a814f4bf",
+          "valid_sha256": "292bdbae1e71d89918091f38ca6e125c70166d1ca2704296ff67a14e11df5d93"
+        },
+        {
+          "first_sample": 65536,
+          "n_samples": 65536,
+          "samples": "audio-000000065536.npy",
+          "valid": "audio-000000065536-valid.npy",
+          "samples_sha256": "3efa286bc2acd59a29ddba4a699964f30f84b985de61ad21a2ed7571b1a398a3",
+          "valid_sha256": "39ba468be18ac145836eceff8fa05d8f7e93f6225a6617ecd2821aa387391ddd"
+        },
+        {
+          "first_sample": 131072,
+          "n_samples": 28928,
+          "samples": "audio-000000131072.npy",
+          "valid": "audio-000000131072-valid.npy",
+          "samples_sha256": "2e5cf7eab09d62f0c575b2df78c6a90fc9fb172b4d82f1e240c7930319f4b921",
+          "valid_sha256": "64672eae569a6bc72ca4cb8135d987208119c40930c816dff35f6941d28f2869"
+        }
+      ]
+    },
+    "reference_pressure": {
+      "sample_rate_hz": 100,
+      "channels": [
+        "tongue_palate_pressure"
+      ],
+      "units": [
+        "kPa"
+      ],
+      "start_time_s": 0.0,
+      "n_samples": 1000,
+      "chunks": [
+        {
+          "first_sample": 0,
+          "n_samples": 1000,
+          "samples": "reference_pressure-000000000000.npy",
+          "valid": "reference_pressure-000000000000-valid.npy",
+          "samples_sha256": "37794097ba9089c0dcbcbad309eccf5b3c3849d0dd3b2eb3bbbd33d3708494c4",
+          "valid_sha256": "8f4c3d905f32355ad9b16a1d7404c4c5cfaa1c92652636e5a21be3d33db0deb2"
+        }
+      ]
+    }
+  },
+  "labels": [
+    {
+      "task": "awake",
+      "start_s": 0.0,
+      "end_s": 1.0,
+      "state": "negative",
+      "provenance": "pressure-reference:synthetic-pressure-software-check:1:18c340cb928e5a088972666ec9d39dab2d2c32badf5910d94f4c4ae1f327b5c0",
+      "reference_protocol_digest": "18c340cb928e5a088972666ec9d39dab2d2c32badf5910d94f4c4ae1f327b5c0"
+    },
+    {
+      "task": "awake",
+      "start_s": 1.0,
+      "end_s": 3.0,
+      "state": "positive",
+      "provenance": "pressure-reference:synthetic-pressure-software-check:1:18c340cb928e5a088972666ec9d39dab2d2c32badf5910d94f4c4ae1f327b5c0",
+      "reference_protocol_digest": "18c340cb928e5a088972666ec9d39dab2d2c32badf5910d94f4c4ae1f327b5c0"
+    },
+    {
+      "task": "awake",
+      "start_s": 3.0,
+      "end_s": 5.0,
+      "state": "negative",
+      "provenance": "pressure-reference:synthetic-pressure-software-check:1:18c340cb928e5a088972666ec9d39dab2d2c32badf5910d94f4c4ae1f327b5c0",
+      "reference_protocol_digest": "18c340cb928e5a088972666ec9d39dab2d2c32badf5910d94f4c4ae1f327b5c0"
+    },
+    {
+      "task": "awake",
+      "start_s": 5.0,
+      "end_s": 7.0,
+      "state": "positive",
+      "provenance": "pressure-reference:synthetic-pressure-software-check:1:18c340cb928e5a088972666ec9d39dab2d2c32badf5910d94f4c4ae1f327b5c0",
+      "reference_protocol_digest": "18c340cb928e5a088972666ec9d39dab2d2c32badf5910d94f4c4ae1f327b5c0"
+    },
+    {
+      "task": "awake",
+      "start_s": 7.0,
+      "end_s": 8.2,
+      "state": "negative",
+      "provenance": "pressure-reference:synthetic-pressure-software-check:1:18c340cb928e5a088972666ec9d39dab2d2c32badf5910d94f4c4ae1f327b5c0",
+      "reference_protocol_digest": "18c340cb928e5a088972666ec9d39dab2d2c32badf5910d94f4c4ae1f327b5c0"
+    },
+    {
+      "task": "awake",
+      "start_s": 8.2,
+      "end_s": 8.3,
+      "state": "exclude",
+      "provenance": "pressure-reference:synthetic-pressure-software-check:1:18c340cb928e5a088972666ec9d39dab2d2c32badf5910d94f4c4ae1f327b5c0",
+      "reference_protocol_digest": "18c340cb928e5a088972666ec9d39dab2d2c32badf5910d94f4c4ae1f327b5c0"
+    },
+    {
+      "task": "awake",
+      "start_s": 8.3,
+      "end_s": 10.0,
+      "state": "negative",
+      "provenance": "pressure-reference:synthetic-pressure-software-check:1:18c340cb928e5a088972666ec9d39dab2d2c32badf5910d94f4c4ae1f327b5c0",
+      "reference_protocol_digest": "18c340cb928e5a088972666ec9d39dab2d2c32badf5910d94f4c4ae1f327b5c0"
+    },
+    {
+      "task": "night_audio",
+      "start_s": 0,
+      "end_s": 3,
+      "state": "negative",
+      "provenance": "synthetic generator"
+    },
+    {
+      "task": "night_audio",
+      "start_s": 3,
+      "end_s": 5,
+      "state": "positive",
+      "provenance": "synthetic generator"
+    },
+    {
+      "task": "night_audio",
+      "start_s": 5,
+      "end_s": 7,
+      "state": "negative",
+      "provenance": "synthetic generator"
+    },
+    {
+      "task": "night_audio",
+      "start_s": 7,
+      "end_s": 9,
+      "state": "positive",
+      "provenance": "synthetic generator"
+    },
+    {
+      "task": "night_audio",
+      "start_s": 9,
+      "end_s": 10,
+      "state": "negative",
+      "provenance": "synthetic generator"
+    }
+  ]
+}

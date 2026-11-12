@@ -1,0 +1,14 @@
+{
+  "process_returncode": -9,
+  "termination": "SIGKILL",
+  "acknowledged_chunks": 2,
+  "committed_samples": 200,
+  "recovered_samples": 200,
+  "source_manifest_sha256": "00d95b997bdf03bfa024ee07be2fc2f2780766b20042030f7c9613bac38653cf",
+  "source_unchanged": true,
+  "invalid_samples_preserved": 5,
+  "orphan_excluded": true,
+  "recovered_status": "recovered",
+  "complete": false,
+  "scope": "process-kill software test; not hardware power-loss qualification"
+}

@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "session_id": "synthetic-session-00",
+  "source_manifest_sha256": "c2e097eedf0e5198e44fb2bd0e2237c1bdc4d9b8ad6b4388ea11712d4e2d6241",
+  "synthetic_only": true,
+  "recording_status": "complete",
+  "duration_s": 10.0,
+  "replay_mode": "offline original sample order, not wall-clock playback",
+  "invalid_values": "preserved in CSV; apply valid=0 mask before analysis",
+  "timestamp_definition": "start_time_s + sample_index / sample_rate_hz",
+  "streams": {
+    "emg": {
+      "file": "emg.csv",
+      "sha256": "205de3a5cab2bee11a81e28283cc1d060d5642473375c5102fd92ab872d3b7fe",
+      "sample_count": 16000,
+      "valid_sample_count": 15840,
+      "invalid_sample_count": 160,
+      "sample_rate_hz": 1600,
+      "start_time_s": 0.0,
+      "end_time_s": 10.0,
+      "channels": [
+        "synthetic_a",
+        "synthetic_b"
+      ],
+      "units": [
+        "uV",
+        "uV"
+      ],
+      "value_columns": [
+        "value:synthetic_a",
+        "value:synthetic_b"
+      ],
+      "missing_ranges": [
+        {
+          "first_sample": 6400,
+          "end_sample": 6560,
+          "start_s": 4.0,
+          "end_s": 4.1,
+          "kind": "invalid_samples"
+        }
+      ]
+    },
+    "audio": {
+      "file": "audio.csv",
+      "sha256": "ab37040cd03a7740dbe2631fafebd686f0e1dd36f88d2996c3d7892f40f0d7a0",
+      "sample_count": 160000,
+      "valid_sample_count": 158400,
+      "invalid_sample_count": 1600,
+      "sample_rate_hz": 16000,
+      "start_time_s": 0.0,
+      "end_time_s": 10.0,
+      "channels": [
+        "mono"
+      ],
+      "units": [
+        "FS"
+      ],
+      "value_columns": [
+        "value:mono"
+      ],
+      "missing_ranges": [
+        {
+          "first_sample": 32000,
+          "end_sample": 33600,
+          "start_s": 2.0,
+          "end_s": 2.1,
+          "kind": "invalid_samples"
+        }
+      ]
+    },
+    "reference_pressure": {
+      "file": "reference_pressure.csv",
+      "sha256": "9b118a167d7853987ee52d279cc8f681f7f466057ab5e8f14d3ff3a6cbf5d6fe",
+      "sample_count": 1000,
+      "valid_sample_count": 990,
+      "invalid_sample_count": 10,
+      "sample_rate_hz": 100,
+      "start_time_s": 0.0,
+      "end_time_s": 10.0,
+      "channels": [
+        "tongue_palate_pressure"
+      ],
+      "units": [
+        "kPa"
+      ],
+      "value_columns": [
+        "value:tongue_palate_pressure"
+      ],
+      "missing_ranges": [
+        {
+          "first_sample": 820,
+          "end_sample": 830,
+          "start_s": 8.2,
+          "end_s": 8.3,
+          "kind": "invalid_samples"
+        }
+      ]
+    }
+  }
+}

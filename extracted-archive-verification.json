@@ -1,0 +1,18 @@
+{
+  "checksummed_files": 194,
+  "csv_exact_roundtrip_sample_counts": {
+    "emg": 16000,
+    "audio": 160000,
+    "reference_pressure": 1000
+  },
+  "both_models_replayed": true,
+  "both_baselines_retrained_within_numeric_tolerance": true,
+  "held_out_reports_reproduced": true,
+  "crash_recovery_verified": true,
+  "synthetic_only": true,
+  "clinical_performance_evidence": false,
+  "archive_sha256": "805d342d2efb45a446eca27d9ca04500987de371a42627773ecdc171cb80db07",
+  "extracted_archive_verified": true,
+  "source_imported_from_extracted_repo": true,
+  "software_version": "0.2.0"
+}

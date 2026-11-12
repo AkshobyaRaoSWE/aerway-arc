@@ -1,0 +1,18 @@
+{
+  "validation": [
+    "synthetic-person-05",
+    "synthetic-person-06"
+  ],
+  "test": [
+    "synthetic-person-00",
+    "synthetic-person-07"
+  ],
+  "train": [
+    "synthetic-person-01",
+    "synthetic-person-02",
+    "synthetic-person-03",
+    "synthetic-person-04",
+    "synthetic-person-08",
+    "synthetic-person-09"
+  ]
+}

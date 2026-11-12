@@ -1,0 +1,281 @@
+{
+  "schema_version": 1,
+  "software_version": "0.2.0",
+  "task": "night_audio",
+  "feature_names": [
+    "audio.log_rms",
+    "audio.zero_crossing_rate",
+    "audio.mfcc0.mean",
+    "audio.mfcc1.mean",
+    "audio.mfcc2.mean",
+    "audio.mfcc3.mean",
+    "audio.mfcc4.mean",
+    "audio.mfcc5.mean",
+    "audio.mfcc6.mean",
+    "audio.mfcc7.mean",
+    "audio.mfcc8.mean",
+    "audio.mfcc9.mean",
+    "audio.mfcc10.mean",
+    "audio.mfcc11.mean",
+    "audio.mfcc12.mean",
+    "audio.mfcc0.std",
+    "audio.mfcc1.std",
+    "audio.mfcc2.std",
+    "audio.mfcc3.std",
+    "audio.mfcc4.std",
+    "audio.mfcc5.std",
+    "audio.mfcc6.std",
+    "audio.mfcc7.std",
+    "audio.mfcc8.std",
+    "audio.mfcc9.std",
+    "audio.mfcc10.std",
+    "audio.mfcc11.std",
+    "audio.mfcc12.std"
+  ],
+  "probability_calibration": "uncalibrated",
+  "seed": 42,
+  "training_rows": 366,
+  "algorithm": "logistic_regression",
+  "mean": [
+    -3.0580486512077525,
+    0.07769983249135003,
+    -81.74718891004603,
+    -0.6766848826634673,
+    4.7728421062090804,
+    2.9796116640626265,
+    2.1536018864127224,
+    0.30014924334299725,
+    -1.073990423320407,
+    -2.642830376486015,
+    -3.689362458943381,
+    -4.4903477750834755,
+    -4.76418442347604,
+    -4.723936978760322,
+    -4.178360900509012,
+    1.762069841225412,
+    2.1253405149773688,
+    1.671817369890997,
+    1.319008801667414,
+    1.056683326245295,
+    0.9139418220790265,
+    0.9112193855577273,
+    1.083808588195407,
+    1.2503866773121053,
+    1.3813386297205565,
+    1.4456793583394538,
+    1.4199608621813673,
+    1.3064417850309247
+  ],
+  "scale": [
+    0.5100912605234053,
+    0.024799807637019944,
+    0.8305292688397453,
+    1.127181105185726,
+    0.9557968706096914,
+    0.7369065693449387,
+    0.4410784192677621,
+    0.13988979132758433,
+    0.22969126700519804,
+    0.49400467016735206,
+    0.6944614940285646,
+    0.8344955601433016,
+    0.8755782995050364,
+    0.8660529798206043,
+    0.7487073312890272,
+    0.2994588348617938,
+    0.42863891326838205,
+    0.3271689645823607,
+    0.21797146650153604,
+    0.10060551555200523,
+    0.04560760159246445,
+    0.050066461040439665,
+    0.12440713344355722,
+    0.20544797110482774,
+    0.27048426557128924,
+    0.2876988579322454,
+    0.27635795707680094,
+    0.22857776163070812
+  ],
+  "coefficient": [
+    -1.9158876430491993,
+    0.716297321198709,
+    -2.218669823259557,
+    -0.24643071081130044,
+    -0.6784641138776224,
+    -0.28742170509494186,
+    1.179310808765132,
+    -0.017821473604712233,
+    1.8968097875750314,
+    -2.119513532420697,
+    -1.2104687512860055,
+    -1.1121953277722432,
+    -0.584481865706116,
+    0.07160261288103076,
+    -0.545224726273672,
+    3.021580111385251,
+    -2.673133483850973,
+    -0.6731321133367771,
+    -1.2809354443045542,
+    0.19097028188138732,
+    -0.6725699800355636,
+    -0.9165904675032679,
+    0.9624985305355761,
+    -0.7154621191762486,
+    0.5962592158294686,
+    0.9582205024882403,
+    0.4390000970412283,
+    0.7552263221543138
+  ],
+  "intercept": 0.012752948270016638,
+  "parameters": {
+    "class_weight": "balanced",
+    "max_iter": 1000
+  },
+  "model_version": "arc-night_audio-0.2.0",
+  "intended_use": "research_only",
+  "synthetic_only": true,
+  "clinical_validation": "none",
+  "live_coaching_enabled": false,
+  "window_config": {
+    "window_s": 2.0,
+    "hop_s": 0.1,
+    "motion": false
+  },
+  "input_signature": {
+    "audio": {
+      "sample_rate_hz": 16000,
+      "channels": [
+        "mono"
+      ],
+      "units": [
+        "FS"
+      ],
+      "signal_chain": {
+        "generator": "sine amplitude states",
+        "clip_low": -1.0,
+        "clip_high": 1.0
+      }
+    }
+  },
+  "awake_reference_definition": null,
+  "decision": {
+    "threshold": 0.75,
+    "threshold_target": "respiratory_event",
+    "min_duration_s": 0.0,
+    "gap_merge_s": 0.0,
+    "iou_threshold": 0.3,
+    "selection": "validation frame balanced accuracy; ties nearest 0.5 then lower threshold",
+    "validation_balanced_accuracy": 0.7682795698924731,
+    "event_rules": "research configuration, not clinical event criteria"
+  },
+  "splits": {
+    "validation": [
+      "synthetic-person-05",
+      "synthetic-person-06"
+    ],
+    "test": [
+      "synthetic-person-00",
+      "synthetic-person-07"
+    ],
+    "train": [
+      "synthetic-person-01",
+      "synthetic-person-02",
+      "synthetic-person-03",
+      "synthetic-person-04",
+      "synthetic-person-08",
+      "synthetic-person-09"
+    ]
+  },
+  "dataset_digest": "e2b079b594707f2b0d179dd9001aebce344ffe85d31d78133a5e871711e55583",
+  "provenance": [
+    {
+      "participant_id": "synthetic-person-00",
+      "session_id": "synthetic-session-00",
+      "source": "arc-selfcheck",
+      "source_version": "2",
+      "permission": "generated synthetic fixture, no participant data",
+      "label_source": "synthetic pressure trace for awake; generated audio states for night; not clinical truth"
+    },
+    {
+      "participant_id": "synthetic-person-01",
+      "session_id": "synthetic-session-01",
+      "source": "arc-selfcheck",
+      "source_version": "2",
+      "permission": "generated synthetic fixture, no participant data",
+      "label_source": "synthetic pressure trace for awake; generated audio states for night; not clinical truth"
+    },
+    {
+      "participant_id": "synthetic-person-02",
+      "session_id": "synthetic-session-02",
+      "source": "arc-selfcheck",
+      "source_version": "2",
+      "permission": "generated synthetic fixture, no participant data",
+      "label_source": "synthetic pressure trace for awake; generated audio states for night; not clinical truth"
+    },
+    {
+      "participant_id": "synthetic-person-03",
+      "session_id": "synthetic-session-03",
+      "source": "arc-selfcheck",
+      "source_version": "2",
+      "permission": "generated synthetic fixture, no participant data",
+      "label_source": "synthetic pressure trace for awake; generated audio states for night; not clinical truth"
+    },
+    {
+      "participant_id": "synthetic-person-04",
+      "session_id": "synthetic-session-04",
+      "source": "arc-selfcheck",
+      "source_version": "2",
+      "permission": "generated synthetic fixture, no participant data",
+      "label_source": "synthetic pressure trace for awake; generated audio states for night; not clinical truth"
+    },
+    {
+      "participant_id": "synthetic-person-05",
+      "session_id": "synthetic-session-05",
+      "source": "arc-selfcheck",
+      "source_version": "2",
+      "permission": "generated synthetic fixture, no participant data",
+      "label_source": "synthetic pressure trace for awake; generated audio states for night; not clinical truth"
+    },
+    {
+      "participant_id": "synthetic-person-06",
+      "session_id": "synthetic-session-06",
+      "source": "arc-selfcheck",
+      "source_version": "2",
+      "permission": "generated synthetic fixture, no participant data",
+      "label_source": "synthetic pressure trace for awake; generated audio states for night; not clinical truth"
+    },
+    {
+      "participant_id": "synthetic-person-07",
+      "session_id": "synthetic-session-07",
+      "source": "arc-selfcheck",
+      "source_version": "2",
+      "permission": "generated synthetic fixture, no participant data",
+      "label_source": "synthetic pressure trace for awake; generated audio states for night; not clinical truth"
+    },
+    {
+      "participant_id": "synthetic-person-08",
+      "session_id": "synthetic-session-08",
+      "source": "arc-selfcheck",
+      "source_version": "2",
+      "permission": "generated synthetic fixture, no participant data",
+      "label_source": "synthetic pressure trace for awake; generated audio states for night; not clinical truth"
+    },
+    {
+      "participant_id": "synthetic-person-09",
+      "session_id": "synthetic-session-09",
+      "source": "arc-selfcheck",
+      "source_version": "2",
+      "permission": "generated synthetic fixture, no participant data",
+      "label_source": "synthetic pressure trace for awake; generated audio states for night; not clinical truth"
+    }
+  ],
+  "environment": {
+    "python": "3.14.5",
+    "numpy": "2.4.6",
+    "scipy": "1.18.0",
+    "scikit-learn": "1.9.0"
+  },
+  "training_participants": 6,
+  "validation_participants": 2,
+  "bundle_digest": "7f9de2c690e09730915060f293c6c5ffa98419d8b572c269b06792312f28c015"
+}

@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aerway-arc"
+version = "0.2.0"
+description = "Reproducible, quality-gated Arc research model pipelines"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.26,<3", "scipy>=1.11,<2", "scikit-learn>=1.4,<2"]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10"]
+plot = ["matplotlib>=3.8,<4"]
+
+[project.scripts]
+arc = "arc.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["arc*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

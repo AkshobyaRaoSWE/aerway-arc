@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "software_version": "0.2.0",
+  "task": "awake",
+  "feature_names": [
+    "ch0.rms",
+    "ch0.mav",
+    "ch0.waveform_length_per_s",
+    "ch0.relative_rms",
+    "ch0.rms_slope_per_s",
+    "ch1.rms",
+    "ch1.mav",
+    "ch1.waveform_length_per_s",
+    "ch1.relative_rms",
+    "ch1.rms_slope_per_s"
+  ],
+  "algorithm": "amplitude_threshold",
+  "probability_calibration": "hard_threshold_not_probability",
+  "indices": [
+    3,
+    8
+  ],
+  "threshold": 0.44136638744905665,
+  "training_rows": 540,
+  "parameters": {
+    "selection": "training_balanced_accuracy"
+  },
+  "window_config": {
+    "window_s": 0.5,
+    "hop_s": 0.1,
+    "motion": false
+  },
+  "input_signature": {
+    "emg": {
+      "sample_rate_hz": 1600,
+      "channels": [
+        "synthetic_a",
+        "synthetic_b"
+      ],
+      "units": [
+        "uV",
+        "uV"
+      ],
+      "signal_chain": {
+        "generator": "Gaussian amplitude states"
+      }
+    }
+  },
+  "synthetic_only": true,
+  "intended_use": "research_only",
+  "dataset_digest": "e2b079b594707f2b0d179dd9001aebce344ffe85d31d78133a5e871711e55583"
+}

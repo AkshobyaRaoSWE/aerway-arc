@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arc | Model architecture and release gates</title>
+<style>
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #141414; color: #eeeeec; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.page { width: 210mm; height: 297mm; padding: 19mm 19mm 17mm; position: relative; break-after: page; overflow: hidden; }
+.page:last-child { break-after: auto; }
+.top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444; padding-bottom: 4mm; margin-bottom: 12mm; color: #b8b8b3; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; }
+h1 { font-size: 47px; line-height: 1.04; letter-spacing: -1.9px; font-weight: 550; margin: 0 0 8mm; }
+h2 { font-size: 29px; line-height: 1.14; letter-spacing: -.8px; font-weight: 550; margin: 0 0 7mm; }
+h3 { font-size: 15px; line-height: 1.35; margin: 7mm 0 2.5mm; font-weight: 600; }
+p { font-size: 11.3px; line-height: 1.6; margin: 0 0 4mm; color: #d3d3ce; }
+.lead { font-size: 15px; line-height: 1.5; color: #deded9; max-width: 153mm; }
+.caption { color: #a1a19b; font-size: 9px; line-height: 1.5; }
+.eyebrow { font-size: 10px; color: #b7b7b0; text-transform: uppercase; letter-spacing: 1.7px; margin: 0 0 5mm; }
+.rule { border-top: 1px solid #444; padding-top: 4mm; margin-top: 5mm; }
+.callout { border-left: 2px solid #bdbdb4; padding: 3mm 0 3mm 5mm; margin: 6mm 0; }
+.callout p:last-child { margin-bottom: 0; }
+code, .mono { font-family: "SFMono-Regular", Menlo, Consolas, monospace; font-size: 10px; }
+code { color: #efefe9; }
+a { color: #cacac2; text-decoration: underline; text-decoration-thickness: .5px; text-underline-offset: 2px; }
+table { width: 100%; border-collapse: collapse; margin: 4mm 0 6mm; table-layout: fixed; }
+th { font-size: 9px; text-transform: uppercase; letter-spacing: .8px; font-weight: 500; text-align: left; color: #a4a49e; padding: 3mm 3mm 3mm 0; border-bottom: 1px solid #63635b; }
+td { font-size: 10.6px; line-height: 1.5; vertical-align: top; padding: 3.3mm 3mm 3.3mm 0; border-bottom: 1px solid #373733; color: #d8d8d1; }
+td:first-child { color: #f0f0e8; }
+.small-table td { font-size: 10px; padding-top: 2.7mm; padding-bottom: 2.7mm; }
+.flow { border-top: 1px solid #555; border-bottom: 1px solid #555; margin: 7mm 0; padding: 4mm 0; }
+.flow-row { display: grid; grid-template-columns: 34mm 1fr; gap: 7mm; padding: 3mm 0; }
+.flow-row + .flow-row { border-top: 1px solid #32322e; }
+.flow-label { font-size: 10px; color: #9f9f97; padding-top: 1px; }
+.flow-value { font-size: 12px; line-height: 1.5; }
+.columns { display: grid; grid-template-columns: 1fr 1fr; gap: 9mm; }
+.columns h3 { margin-top: 3mm; }
+ul, ol { margin: 2mm 0 5mm; padding-left: 4.5mm; }
+li { font-size: 11px; line-height: 1.55; color: #d3d3ce; margin: 0 0 2mm; padding-left: 1mm; }
+.footer { position: absolute; bottom: 12mm; left: 19mm; right: 19mm; border-top: 1px solid #444; padding-top: 3mm; display: flex; justify-content: space-between; align-items: flex-start; gap: 5mm; font-size: 8px; line-height: 1.5; color: #99998f; }
+.footer .sources { max-width: 145mm; }
+.big-number { font-size: 36px; letter-spacing: -1px; line-height: 1; margin: 0 0 3mm; color: #f3f3eb; }
+.note-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; margin: 7mm 0; }
+.label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: #a7a79d; margin-bottom: 2mm; }
+@media screen { .page { margin: 16px auto; box-shadow: 0 0 0 1px #333; } }
+</style>
+</head>
+<body>
+<section class="page">
+<div class="top"><span>Arc / Engineering architecture</span><span>11 November 2026</span></div>
+<div class="eyebrow">Research build / v0.2.0</div>
+<h1>One recording contract.<br>Two separate models.</h1>
+<p class="lead">Measure a reference-defined tongue hold during practice. Detect reference-labelled respiratory-event candidates in recorded audio.</p>
+<div class="flow">
+<div class="flow-row"><div class="flow-label">INPUT BOUNDARY</div><div class="flow-value">Aligned physical-unit samples + explicit validity + independent labels + acquisition provenance</div></div>
+<div class="flow-row"><div class="flow-label">SHARED STORAGE</div><div class="flow-value">Checksummed array chunks and session manifest<br><span class="caption">Raw arrays remain available. Labels never enter feature vectors.</span></div></div>
+<div class="flow-row"><div class="flow-label">SEPARATE ANALYSIS</div><div class="flow-value">Awake: EMG features → random forest<br>Night: energy / MFCC statistics → logistic regression</div></div>
+<div class="flow-row"><div class="flow-label">OUTPUT</div><div class="flow-value">Valid probability or explicit abstention → candidate timeline → held-out research report</div></div>
+</div>
+<div class="columns">
+<div><h3>Implemented boundary</h3><p>Local saved-session analysis, baseline training, JSON model export, replay and participant-isolated evaluation. CPU execution; no cloud service required by this design.</p></div>
+<div><h3>Evidence boundary</h3><p>No clinical recordings were trained in this build. Synthetic tests establish software behavior only. Neither model establishes treatment benefit or readiness for patient feedback.</p></div>
+</div>
+<div class="callout"><p><strong>Architectural commitment:</strong> overnight predictions cannot select exercises or change treatment. The models share storage, never clinical conclusions or labels.</p></div>
+<div class="footer"><div class="sources">Implementation: <a href="../arc/pipeline.py">pipeline.py</a> · <a href="../arc/session.py">session.py</a><br>Scope: <a href="sources/Akshobya_Two_Model_Build_Brief.md">two-model brief</a> · <a href="sources/Arc_Data_and_ML_Plan.md">data and ML plan</a></div><span>01 / 07</span></div>
+</section>
+
+<section class="page">
+<div class="top"><span>Arc / Data boundary</span><span>Contract before accuracy</span></div>
+<h2>A recording must explain<br>what every sample means.</h2>
+<p class="lead">Session time is an explicit common clock. Phone arrival time is not a synchronization method.</p>
+<table class="small-table">
+<colgroup><col style="width:29%"><col></colgroup>
+<thead><tr><th>Contract</th><th>Required evidence</th></tr></thead>
+<tbody>
+<tr><td>Session identity</td><td>Participant, session and placement IDs; source and version; permission statement; explicit synthetic flag; acquisition configuration and label source.</td></tr>
+<tr><td>Stream identity</td><td>Sample rate, ordered channel names, per-channel units, start time, sample count, chunk positions and SHA256 hashes. Optional calibration travels with the stream.</td></tr>
+<tr><td>Signal chain</td><td>Training requires nonempty per-stream configuration. Rate, channels, units and signal-chain contents form the frozen input signature.</td></tr>
+<tr><td>Reference labels</td><td>Nonempty interval, task, positive / negative / exclude state and provenance. Scored intervals cannot overlap within a task. Exclusions may override them.</td></tr>
+<tr><td>Clock evidence</td><td>Training requires a documented reference-alignment method and declared maximum error no greater than half the output bin. At the default 100 ms bin, that engineering guard is 50 ms.</td></tr>
+</tbody>
+</table>
+<h3>Storage and failure behavior</h3>
+<p>Numeric <code>.npy</code> chunks preserve supplied values and data types. Boolean arrays carry per-sample validity. The reader verifies checksums and shapes, rejects object arrays and escaping paths, and reads bounded windows through a small mapping cache.</p>
+<p>Physical units must be converted correctly upstream. Preserve original ADC counts as a separate stream when needed. Missing or out-of-range samples remain invalid; the reader does not invent data or resample it.</p>
+<div class="callout"><p><strong>Committed chunks survive a process crash.</strong> Each append synchronizes chunk files and atomically checkpoints the manifest before acknowledging. Recovery copies verified chunks and stays explicitly incomplete. In-flight orphan files are ignored. BLE transport and hardware power-loss qualification remain separate.</p></div>
+<h3>What provenance cannot prove</h3>
+<p>A hash detects changed content, not a true sensor claim. A permission string is an audit field, not a license grant. Declared alignment error must come from measured synchronization, not a convenient number.</p>
+<div class="footer"><div class="sources">Implementation: <a href="../arc/session.py">session.py</a> · <a href="../arc/dataset.py">dataset.py</a> · <a href="../arc/pipeline.py">pipeline.py</a><br>The alignment guard is an implementation constraint, not a clinical timing standard.</div><span>02 / 07</span></div>
+</section>
+
+<section class="page">
+<div class="top"><span>Arc / Awake model</span><span>Positive class = maintained hold</span></div>
+<h2>Causal features.<br>A bounded baseline.</h2>
+<p class="lead">Predict whether the independently defined hold is maintained. Derive interruption probability as <code>1 − P(hold)</code>.</p>
+<div class="note-grid">
+<div><div class="big-number">0.5 s</div><div class="label">Trailing feature window</div><p class="caption">No samples after the output bin end. Warm-up windows abstain.</p></div>
+<div><div class="big-number">0.1 s</div><div class="label">Output bin / update step</div><p class="caption">This is sampling resolution, not a claim of 100 ms end-to-end response.</p></div>
+</div>
+<table class="small-table">
+<colgroup><col style="width:29%"><col></colgroup>
+<thead><tr><th>Component</th><th>Exact baseline</th></tr></thead>
+<tbody>
+<tr><td>Required input</td><td>EMG in microvolts, with ordered channels and matching signal-chain metadata. Every sample in the feature window must be valid.</td></tr>
+<tr><td>Per-channel features</td><td>Window-centered RMS, mean absolute value, waveform length per second, RMS / calibration reference, and first-half to second-half RMS slope per second.</td></tr>
+<tr><td>Calibration</td><td>One positive finite RMS reference per channel; calibration ID and source. Availability must precede the feature context. Future labelled trials cannot provide it.</td></tr>
+<tr><td>Optional motion</td><td>Disabled by default. When enabled: six ordered axes; acceleration in m/s² and gyro in rad/s. Adds acceleration-vector RMS and angular-velocity RMS.</td></tr>
+<tr><td>Classifier</td><td>200-tree random forest; maximum depth 8; minimum leaf size 2; balanced class weights; deterministic seed, default 42.</td></tr>
+<tr><td>Comparator</td><td>Mean calibrated RMS threshold selected on training data by balanced accuracy. Reported alongside the forest on validation data.</td></tr>
+</tbody>
+</table>
+<h3>Deliberate limits</h3>
+<p>Awake truth: separate pressure in kPa, using the selected JMS TPM-02 recording path. Protocol specifies pressure threshold, hold duration and interruption duration; short runs or missing pressure are excluded. Actual instrument calibration, synchronization and clinician-approved criteria remain unverified. See the linked reference decision.</p>
+<p>Probabilities are uncalibrated model scores. No clinical criteria are fabricated; real training requires approved reference metadata and reproduced labels. No live cue engine is enabled. The model does not establish full exercise correctness, isolated muscle activity or tongue position.</p>
+<div class="footer"><div class="sources">Implementation: <a href="../arc/reference.py">reference.py</a> · <a href="reference-selection.html">instrument decision and manufacturer sources</a><br>Experimental baselines; synthetic settings are not clinical criteria.</div><span>03 / 07</span></div>
+</section>
+
+<section class="page">
+<div class="top"><span>Arc / Night audio model</span><span>Positive class = reference respiratory event</span></div>
+<h2>Start with an inspectable<br>audio baseline.</h2>
+<p class="lead">Use microphone data alone at inference. Clinical reference channels define labels; they never become hidden model inputs.</p>
+<table class="small-table">
+<colgroup><col style="width:29%"><col></colgroup>
+<thead><tr><th>Component</th><th>Implemented behavior</th></tr></thead>
+<tbody>
+<tr><td>Audio boundary</td><td>Mono, 16 kHz, normalized full-scale samples. Channel/rate/configuration mismatch abstains. Samples at or beyond declared clipping rails invalidate the window.</td></tr>
+<tr><td>Context and output</td><td>2-second trailing context, producing one probability per 100 ms nonoverlapping output bin. Overlapping feature windows do not duplicate output bins.</td></tr>
+<tr><td>Spectral frontend</td><td>Complete unpadded 32 ms Hann frames; 10 ms hop; 64 triangular mel filters spanning 20 Hz to 7.6 kHz at 16 kHz sampling; natural-log power floor 10⁻¹².</td></tr>
+<tr><td>28 features</td><td>Log RMS; zero-crossing rate; mean and standard deviation of the first 13 orthonormal type-II DCT coefficients of log-mel energy.</td></tr>
+<tr><td>Classifier</td><td>Training-only standardization followed by class-balanced logistic regression; maximum 1,000 iterations. Means, scales, coefficients and intercept are exported in JSON.</td></tr>
+</tbody>
+</table>
+<div class="callout"><p><strong>Silence is not an event label.</strong> Valid unscored audio stays unlabelled. Quiet breathing, detachment, another person's sound, wake and equipment noise need independent handling and validation.</p></div>
+<h3>Next experiment, deliberately not implemented</h3>
+<p>The supplied brief proposes 20-second log-mel context, compact convolution layers, a bidirectional GRU and per-time-step probabilities. Bidirectional context would be permitted only for offline analysis.</p>
+<p>Gate that experiment on permitted aligned recordings, a frozen baseline and a preregistered improvement target. Train and compare on identical participant partitions; stitch overlapping block predictions before event extraction. Add a temporal network only if it improves the relevant held-out tradeoff.</p>
+<p class="caption">The current package does not contain a trained neural detector, pretrained apnea checkpoint or clinical AHI estimator. The 2-second baseline is a concrete first comparison, not an implementation of the proposed 20-second temporal network.</p>
+<div class="footer"><div class="sources">Implementation: <a href="../arc/features.py">features.py</a> · <a href="../arc/models.py">models.py</a> · <a href="../arc/dataset.py">dataset.py</a><br>Future experiment: <a href="sources/Akshobya_Two_Model_Build_Brief.md">two-model build brief, nighttime proposal</a></div><span>04 / 07</span></div>
+</section>
+
+<section class="page">
+<div class="top"><span>Arc / Evaluation architecture</span><span>Freeze before testing</span></div>
+<h2>People are the split unit.<br>Time is the denominator.</h2>
+<div class="flow">
+<div class="flow-row"><div class="flow-label">TRAIN</div><div class="flow-value">Fit features' learned normalization and model weights.<br><span class="caption">Both classes must have valid independent labels.</span></div></div>
+<div class="flow-row"><div class="flow-label">VALIDATION</div><div class="flow-value">Select event-probability threshold from 0.05 to 0.95 in 0.05 steps using frame balanced accuracy.</div></div>
+<div class="flow-row"><div class="flow-label">FREEZE</div><div class="flow-value">Save split IDs, input contract, feature order, event rules, source provenance and dataset/model digests.</div></div>
+<div class="flow-row"><div class="flow-label">TEST</div><div class="flow-value">Score only held-out participants with the frozen bundle.<br><span class="caption">All repeated sessions from one person stay in the same partition.</span></div></div>
+</div>
+<p>Default split fractions reserve 20% each for validation and test, with at least one participant in each. Three participants only satisfy the software partition requirement; that is not a sufficient clinical study design.</p>
+<table class="small-table">
+<colgroup><col style="width:31%"><col></colgroup>
+<thead><tr><th>Evaluation decision</th><th>Semantics</th></tr></thead>
+<tbody>
+<tr><td>Unknown reference</td><td>Training/frame labels require one scored state. Mixed-boundary bins stay unlabelled. Event scoring uses original continuous intervals and separate scored coverage, preserving off-grid boundaries.</td></tr>
+<tr><td>Candidate extraction</td><td>Threshold per-task event probability. Invalid or missing bins break candidates; gap merging cannot bridge unavailable data. Default minimum duration and gap merge are zero, research settings only.</td></tr>
+<tr><td>Event matching</td><td>One-to-one maximum-cardinality matching, with total temporal IoU as the tie-break. Default IoU threshold: 0.3.</td></tr>
+<tr><td>Censored reference</td><td>Exact reference events intersecting invalid, unscored or missing coverage are censored. Their spans and overlapping predictions are excluded consistently; counts remain visible. Unknown frame labels at an otherwise scored event boundary do not censor it.</td></tr>
+</tbody>
+</table>
+<p class="caption">Validation is model-selection evidence, not an unbiased performance claim. The local test command refuses changed dataset content. Independent-site evaluation needs a separately versioned external evaluation; a second random split is not an external cohort.</p>
+<div class="footer"><div class="sources">Implementation: <a href="../arc/evaluation.py">evaluation.py</a> · <a href="../arc/pipeline.py">pipeline.py</a> · <a href="../arc/dataset.py">dataset.py</a><br>Threshold and duration settings are engineering experiments, not clinical diagnostic definitions.</div><span>05 / 07</span></div>
+</section>
+
+<section class="page">
+<div class="top"><span>Arc / Failure behavior and reports</span><span>Missing evidence stays missing</span></div>
+<h2>Abstention is an output.<br>It is never a successful hold.</h2>
+<table class="small-table">
+<colgroup><col style="width:36%"><col></colgroup>
+<thead><tr><th>Condition</th><th>Implemented response</th></tr></thead>
+<tbody>
+<tr><td>Missing stream / incompatible input contract</td><td>Invalid prediction with null probability and a reason. Training rejects mixed signal-chain cohorts.</td></tr>
+<tr><td>Missing samples / invalid motion / declared clipping</td><td>Window abstains. Candidates cannot cross an invalid or missing output bin.</td></tr>
+<tr><td>Unavailable calibration / insufficient history</td><td>Awake prediction abstains until the entire required context and usable calibration exist.</td></tr>
+<tr><td>Unknown labels / excluded intervals</td><td>Inference can still run when inputs are valid. Unknown reference cannot contribute supervised training or become a negative label.</td></tr>
+<tr><td>Corrupt chunks / invalid bundle / leakage</td><td>Fail explicitly. Reject checksum mismatch, malformed shapes, unsafe tree structure and shared participant IDs across partitions.</td></tr>
+<tr><td>Synthetic versus real data</td><td>Training requires explicit synthetic permission; mixed manifests and synthetic/real model-replay combinations are refused. Synthetic status travels with outputs.</td></tr>
+</tbody>
+</table>
+<h3>Required reading of every result</h3>
+<p>Reports include event sensitivity and precision, false detections per evaluable hour, usable and labelled coverage, censoring counts, duration-weighted precision-recall and Brier score, matched timing errors and temporal IoU.</p>
+<p>Awake event metrics concern interruptions. False interruptions per minute use valid labelled event-evaluable time. Instructed-practice-only rates are not available. They are not tested coaching cues: no cue scheduler is implemented.</p>
+<p>Confidence intervals resample participants, with 1,000 percentile-bootstrap replicates. Fewer than two participants produces no interval. Undefined denominators remain null. Insufficient evaluable data gets an explicit status; confound summaries report frame metrics and exposure.</p>
+<div class="callout"><p><strong>Do not rename the denominator.</strong> Candidate events per recorded or evaluable hour are not clinical AHI. Uncalibrated score, overlap or output resolution is not diagnostic certainty.</p></div>
+<div class="footer"><div class="sources">Implementation: <a href="../arc/dataset.py">dataset.py</a> · <a href="../arc/evaluation.py">evaluation.py</a> · <a href="../arc/models.py">models.py</a> · <a href="../arc/pipeline.py">pipeline.py</a><br>Per-confound annotations are retained. Clinical subgroup and confound acceptance remain separate review requirements.</div><span>06 / 07</span></div>
+</section>
+
+<section class="page">
+<div class="top"><span>Arc / Release gates</span><span>What must become true next</span></div>
+<h2>Architecture can be locked.<br>Performance must be earned.</h2>
+<table class="small-table">
+<colgroup><col style="width:23%"><col style="width:47%"><col></colgroup>
+<thead><tr><th>Gate</th><th>Evidence required to pass</th><th>Current boundary</th></tr></thead>
+<tbody>
+<tr><td>1 / Acquisition</td><td>Exact channel routing, ADC scaling and bandwidth; clipping/contact behavior; counter and timestamp mapping; measured drift and sustained capture with every dropout accounted for.</td><td>No hardware transport implemented or validated.</td></tr>
+<tr><td>2 / Independent truth</td><td>Clinician-defined hold/interruption criterion and suitable synchronized reference. For audio: permitted recordings with scored event and exclusion intervals, original subtypes retained.</td><td>No clinical training data supplied to this build.</td></tr>
+<tr><td>3 / Baseline integrity</td><td>Replay saved samples, verify units/alignment, freeze subject splits, compare simple baselines and retain realistic prevalence. Synthetic tests cannot substitute for this gate.</td><td>Software pipeline and checks implemented; real-data gate unpassed.</td></tr>
+<tr><td>4 / Useful discrimination</td><td>Set minimum sensitivity, maximum false events, acceptable coverage, timing error and subgroup/confound tolerances before final testing. Choose study size and acceptable uncertainty.</td><td>Clinical owners must define these acceptance values. None invented here.</td></tr>
+<tr><td>5 / Hardware transfer</td><td>Evaluate Arc recordings alongside an independent reference, across placement changes, people and recording conditions. Keep external data separate from model selection.</td><td>Public-data success alone cannot pass.</td></tr>
+<tr><td>6 / Feedback release</td><td>Validated sustained-evidence threshold, confirmation interval, cooldown and measured total latency; show feedback improves practice under the approved protocol.</td><td>Live coaching disabled. No treatment recommendation path.</td></tr>
+</tbody>
+</table>
+<div class="columns">
+<div><h3>Security and retention</h3><p>Local files only; JSON model weights avoid executable pickle. Keep identity mappings outside research sessions. Raw audio access, encryption, retention and backup rules must be supplied by the approved operating environment.</p></div>
+<div><h3>Deployment sequence</h3><p>Saved-session laptop analysis first. A BLE receiver, one-phone logger, phone export parity and full-night hardware testing remain. Incremental checkpoints and process-crash recovery are implemented. No phone runtime, VM deployment or autonomous medical action is included.</p></div>
+</div>
+<p class="caption rule">Release claim today: reproducible research software with explicit failure behavior. Not a trained clinical product. No architecture can replace permitted data, measured capture quality or independent validation.</p>
+<div class="footer"><div class="sources">Scope and readiness basis: <a href="sources/Akshobya_Two_Model_Build_Brief.md">two-model build brief</a> · <a href="sources/Arc_Data_and_ML_Plan.md">data and ML plan</a><br>Implementation: <a href="../arc/pipeline.py">pipeline.py</a> · <a href="../arc/session.py">session.py</a></div><span>07 / 07</span></div>
+</section>
+</body>
+</html>

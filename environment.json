@@ -1,0 +1,16 @@
+{
+  "python": "3.14.5",
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "source_dirty": false,
+  "packages": {
+    "numpy": "2.4.6",
+    "scipy": "1.18.0",
+    "scikit-learn": "1.9.0",
+    "matplotlib": "3.10.9",
+    "pytest": "9.1.1",
+    "joblib": "1.5.3",
+    "threadpoolctl": "3.6.0"
+  },
+  "source_commit": "49ee28ee352cd0882de29ccc93900fb312cea403",
+  "tests_passed": 169
+}
